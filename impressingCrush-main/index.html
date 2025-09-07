@@ -2,15 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ Mobile scaling -->
   <title>Happy Birthday Sister ❤️</title>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Short+Stack&amp;family=Homemade+Apple&amp;display=swap'>
   <link rel="stylesheet" href="./style.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%; /* ✅ Responsive images */
+      height: auto;
+    }
+
+    /* Music button responsive */
+    #music-toggle {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      padding: 10px 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      cursor: pointer;
+      font-size: 18px;
+      border: none;
+    }
+    #music-toggle.playing {
+      background: #ff6b81;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
 <!-- A pen by Developer Rahul  -->
 
-<div class="paper heart">
-</div>
+<div class="paper heart"></div>
 
 <div class="paper image">
   <p> And I feel so lucky </p>
@@ -45,36 +78,60 @@
 
 <!-- Background Music -->
 <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
-
 <button id="music-toggle" title="Play / Pause music">🔈</button>
-
-<style>
-  #music-toggle {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 9999;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
-    padding: 10px 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    cursor: pointer;
-    font-size: 18px;
-    border: none;
-  }
-  #music-toggle.playing {
-    background: #ff6b81;
-    color: #fff;
-  }
-</style>
 
 <script src="./script.js"></script>
 
 <script>
+  // ✅ Add mobile drag support
+  document.querySelectorAll(".paper").forEach(paper => {
+    let isDragging = false, offsetX = 0, offsetY = 0;
+
+    function getXY(e) {
+      if (e.touches && e.touches.length > 0) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else {
+        return { x: e.clientX, y: e.clientY };
+      }
+    }
+
+    function startDrag(e) {
+      isDragging = true;
+      const pos = getXY(e);
+      offsetX = pos.x - paper.offsetLeft;
+      offsetY = pos.y - paper.offsetTop;
+      paper.style.position = "absolute";
+      paper.style.zIndex = 999;
+      e.preventDefault();
+    }
+
+    function doDrag(e) {
+      if (!isDragging) return;
+      const pos = getXY(e);
+      paper.style.left = (pos.x - offsetX) + "px";
+      paper.style.top = (pos.y - offsetY) + "px";
+      e.preventDefault();
+    }
+
+    function stopDrag() {
+      isDragging = false;
+    }
+
+    // Mouse events
+    paper.addEventListener("mousedown", startDrag);
+    window.addEventListener("mousemove", doDrag);
+    window.addEventListener("mouseup", stopDrag);
+
+    // Touch events
+    paper.addEventListener("touchstart", startDrag);
+    window.addEventListener("touchmove", doDrag);
+    window.addEventListener("touchend", stopDrag);
+  });
+
+  // ✅ Music toggle code
   (function(){
     const audio = document.getElementById('bg-music');
     const btn = document.getElementById('music-toggle');
-
     audio.volume = 0.5;
 
     async function tryPlay() {
