@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Sister ❤️</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Short+Stack&amp;family=Homemade+Apple&amp;display=swap'>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<!-- A pen by Developer Rahul  -->
+
+<div class="paper heart">
+</div>
+
+<div class="paper image">
+  <p> And I feel so lucky </p>
+  <p> to have You as my Sister ❤️ </p>
+  <img src="images/1.jpeg" />
+</div>
+
+<div class="paper image">
+  <p></p>
+  <img src="images/2.jpeg" />
+</div>
+
+<div class="paper image">
+  <p>You are not just cute </p>
+  <p>You are my blessing 😇 </p>
+  <img src="images/3.jpg" />
+</div>
+
+<div class="paper red">
+  <p class="p1"> You will always be </p>
+  <p class="p2">My Favorite Sister ❤️</p>
+</div>
+
+<div class="paper">
+  <p class="p1">You are Amazing, </p>
+  <p class="p1">Caring and Lovely 💖</p>
+</div>
+
+<div class="paper">
+  <p class="p1">Drag the papers to move!</p>
+</div>
+
+<!-- Background Music -->
+<audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
+
+<button id="music-toggle" title="Play / Pause music">🔈</button>
+
+<style>
+  #music-toggle {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    padding: 10px 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-size: 18px;
+    border: none;
+  }
+  #music-toggle.playing {
+    background: #ff6b81;
+    color: #fff;
+  }
+</style>
+
+<script src="./script.js"></script>
+
+<script>
+  (function(){
+    const audio = document.getElementById('bg-music');
+    const btn = document.getElementById('music-toggle');
+
+    audio.volume = 0.5;
+
+    async function tryPlay() {
+      try {
+        await audio.play();
+        btn.classList.add('playing');
+        btn.textContent = '🔊';
+      } catch (err) {
+        btn.classList.remove('playing');
+        btn.textContent = '🔈';
+      }
+    }
+
+    let playedOnce = false;
+    function userInteractionHandler() {
+      if (!playedOnce) {
+        tryPlay();
+        playedOnce = true;
+        document.removeEventListener('click', userInteractionHandler);
+      }
+    }
+    document.addEventListener('click', userInteractionHandler, {once:true});
+
+    btn.addEventListener('click', async function(e){
+      e.stopPropagation();
+      if (audio.paused) {
+        try {
+          await audio.play();
+          btn.classList.add('playing');
+          btn.textContent = '🔊';
+        } catch (err) {
+          alert('Music play failed — check file path or browser settings.');
+        }
+      } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.textContent = '🔈';
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
