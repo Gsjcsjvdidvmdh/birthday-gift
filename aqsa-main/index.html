@@ -137,13 +137,17 @@
                 <div class="card2">
                     <div class="card2-content">
                         <h3>To You!</h3>
-                        <h2>Happy birthday 🥳🎂🥳 dullooo the day you come into my life I was not really much attached to
-                            you but day by day you became close to my heart . And now you are truly my younger sister. I
-                            wish I could remove some of the pain from your life which you are bearing alone. But you're
-                            always welcome 🤗 you can talk anytime you want to talk specially those which you can't say
-                            to others. And this year your all dreams come true . I wish that your
-                            brother could wish you but if couldn't wish on him behalf I am wishing you happy birthday
-                            🎈🎂🎈 dulloooo . Don't be Sad ok be happy 😌
+                        <h2>
+                            Happy Birthday 🥳🎂🥳 Dullooo… jis din tu meri life me aayi thi na, tab shayad itna attach feel nahi karta tha. 
+                            Lekin din ba din tu mere dil ke bohot close hoti gayi ❤️. Ab tu mere liye asli chhoti behen ban gayi hai.  
+                            <br><br>
+                            Kaash main tere life ke kuch dukh hata pata, jo tu akeli jhel rahi hai 😔. Par yaad rakh, tu hamesha mere liye welcome hai 🤗. 
+                            Jab bhi baat karni ho, especially jo baat tu dusro ko nahi bol pati, tu mujhse keh sakti hai.  
+                            <br><br>
+                            Is saal tere saare sapne poore ho jayein yehi dua hai 🙏. 
+                            Tera bhai tujhe wish nahi kar paaya, toh main uske behalf pe tujhe Happy Birthday wish karta hoon 🎂🎈🎂 Dullooo.  
+                            <br><br>
+                            Sad mat rehna ok… always khush rehna 😌💖
                         </h2>
                         <div class="imageCute2">
                             <img src="cute2.png" alt="">
@@ -263,74 +267,21 @@
 </script>
 
 <!-- Background Music -->
-<audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
-
-<button id="music-toggle" title="Play / Pause music">🔈</button>
-
-<style>
-  #music-toggle {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 9999;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
-    padding: 10px 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    cursor: pointer;
-    font-size: 18px;
-    border: none;
-  }
-  #music-toggle.playing {
-    background: #ff6b81;
-    color: #fff;
-  }
-</style>
+<audio id="bg-music" src="music.mp3" autoplay loop preload="auto"></audio>
 
 <script>
   (function(){
     const audio = document.getElementById('bg-music');
-    const btn = document.getElementById('music-toggle');
-
     audio.volume = 0.5;
 
-    async function tryPlay() {
-      try {
-        await audio.play();
-        btn.classList.add('playing');
-        btn.textContent = '🔊';
-      } catch (err) {
-        btn.classList.remove('playing');
-        btn.textContent = '🔈';
-      }
-    }
-
-    let playedOnce = false;
+    // fallback: agar autoplay block ho jaye to pehle click pe play ho jaye
     function userInteractionHandler() {
-      if (!playedOnce) {
-        tryPlay();
-        playedOnce = true;
-        document.removeEventListener('click', userInteractionHandler);
-      }
-    }
-    document.addEventListener('click', userInteractionHandler, {once:true});
-
-    btn.addEventListener('click', async function(e){
-      e.stopPropagation();
       if (audio.paused) {
-        try {
-          await audio.play();
-          btn.classList.add('playing');
-          btn.textContent = '🔊';
-        } catch (err) {
-          alert('Music play failed — check file path or browser settings.');
-        }
-      } else {
-        audio.pause();
-        btn.classList.remove('playing');
-        btn.textContent = '🔈';
+        audio.play().catch(()=>{});
       }
-    });
+      document.removeEventListener('click', userInteractionHandler);
+    }
+    document.addEventListener('click', userInteractionHandler);
   })();
 </script>
 
